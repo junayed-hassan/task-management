@@ -79,7 +79,7 @@ function TaskTable() {
             </div>
         </div>
     {createPortal(<ModalPopup onCreate={createTask} onOpen={openModal} onClose={() =>setOpenModal(false)}/>,document.getElementById('modal'))} 
-        <DeleteModal deleteTask={()=>setTasks([])} onOpen={deleteModal}  onClose={() =>setDeleteModal(false)} />
+        <DeleteModal deleteTask={()=>setTasks([])} onOpen={tasks.length == 0 ?'': deleteModal}  onClose={() =>setDeleteModal(false)} />
     </Container>
   )
 }
