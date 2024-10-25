@@ -7,6 +7,7 @@ import TaskTableHeader from './TaskTableHeader';
 import { useState } from 'react';
 import { ModalPopup } from '../../components/ModalPopup';
 import { createPortal } from 'react-dom';
+import { DeleteModal } from '../../components/DeleteModal';
 
 
 function NoData () {
@@ -20,6 +21,7 @@ function NoData () {
 
 function TaskTable() {
     let [openModal, setOpenModal] = useState(false); 
+    let [deleteModal,setDeleteModal] = useState(false);
     let [tasks,setTasks] = useState([]);
     
     let createTask = (item) => {
@@ -43,11 +45,18 @@ function TaskTable() {
         }));
     }
 
+    let deleteHandler = (id) => {
+        setTasks(tasks.filter(item => {
+            return item.id != id;
+        }))
+        
+    }
+
   return (
     <Container className="mt-8">
         <div className="flex justify-end w-full">
             <Button onClick={() => setOpenModal(true)} className='mr-2' color="success">Add Task</Button>
-            <Button onClick={()=>setTasks([])}  color="failure">Clear Tasks</Button>
+            <Button onClick={()=>setDeleteModal(true)}  color="failure">Clear Tasks</Button>
         </div>
         <div className="p-2 rounded-sm border my-6">
             <TaskTableHeader />
@@ -63,13 +72,14 @@ function TaskTable() {
                         <Table.HeadCell>Action</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="divide-y">
-                        {tasks.length === 0 ?  <NoData /> : tasks.map((item, index)=>{ return <TaskItem data={item} onEdit={editTask} index={index} key={item.id}/>})}
+                        {tasks.length === 0 ?  <NoData /> : tasks.map((item, index)=>{ return <TaskItem data={item} onDelete={deleteHandler} onEdit={editTask} index={index} key={item.id}/>})}
                         
                     </Table.Body>
                 </Table>
             </div>
         </div>
     {createPortal(<ModalPopup onCreate={createTask} onOpen={openModal} onClose={() =>setOpenModal(false)}/>,document.getElementById('modal'))} 
+        <DeleteModal deleteTask={()=>setTasks([])} onOpen={deleteModal}  onClose={() =>setDeleteModal(false)} />
     </Container>
   )
 }

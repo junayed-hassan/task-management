@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { Table } from "flowbite-react";
 import { ModalPopup } from '../../components/ModalPopup';
+import { DeleteModal } from '../../components/DeleteModal';
 
 function TaskItem(props) {
   let [openModal, setOpenModal] = useState(false); 
-  let {title,description,assignTo,priority} = props.data;
+  let [deleteModal,setDeleteModal] = useState(false);
+  let {id, title,description,assignTo,priority} = props.data;
 
   let editTask = (task) => {
     props.onEdit(task);
@@ -20,10 +22,11 @@ function TaskItem(props) {
         <Table.Cell>{priority}</Table.Cell>
         <Table.Cell>
           <button onClick={()=>setOpenModal(true)} className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 mr-3">Edit</button>
-          <button className="font-medium text-rose-600 hover:underline dark:text-rose-500">Delete</button>
+          <button onClick={()=> setDeleteModal(true)} className="font-medium text-rose-600 hover:underline dark:text-rose-500">Delete</button>
         </Table.Cell>
       </Table.Row>
       <ModalPopup taskToEdit={props.data} onEdit={editTask} onOpen={openModal} onClose={() =>setOpenModal(false)}/>
+      <DeleteModal deleteTask={()=> props.onDelete(id)} onOpen={deleteModal}  onClose={() =>setDeleteModal(false)} />
     </>
    
   )
