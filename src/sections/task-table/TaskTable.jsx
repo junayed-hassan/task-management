@@ -23,8 +23,10 @@ function TaskTable() {
     let [openModal, setOpenModal] = useState(false); 
     let [deleteModal,setDeleteModal] = useState(false);
     let [tasks,setTasks] = useState([]);
+    let [searchText,setSearchText] = useState()
     
     let createTask = (item) => {
+        setDeleteModal(false)
         let upDateTasks = [
             
             {
@@ -52,6 +54,13 @@ function TaskTable() {
         
     }
 
+    let searchHandler = (text) => {
+        setSearchText(text);
+    } 
+    let upDateTasks = tasks.filter(item => {
+        return item.title.toLowerCase().includes(searchText.toLowerCase());
+    });
+
   return (
     <Container className="mt-8">
         <div className="flex justify-end w-full">
@@ -59,7 +68,7 @@ function TaskTable() {
             <Button onClick={()=>setDeleteModal(true)}  color="failure">Clear Tasks</Button>
         </div>
         <div className="p-2 rounded-sm border my-6">
-            <TaskTableHeader />
+            <TaskTableHeader onSearch={searchHandler} />
 
             <div className="overflow-x-auto">
                 <Table hoverable>
@@ -72,14 +81,16 @@ function TaskTable() {
                         <Table.HeadCell>Action</Table.HeadCell>
                     </Table.Head>
                     <Table.Body className="divide-y">
-                        {tasks.length === 0 ?  <NoData /> : tasks.map((item, index)=>{ return <TaskItem data={item} onDelete={deleteHandler} onEdit={editTask} index={index} key={item.id}/>})}
+                        {tasks.length === 0 ?  <NoData /> : upDateTasks.map((item, index)=>{ return <TaskItem data={item} onDelete={deleteHandler} onEdit={editTask} index={index} key={item.id}/>})}
                         
                     </Table.Body>
                 </Table>
             </div>
         </div>
     {createPortal(<ModalPopup onCreate={createTask} onOpen={openModal} onClose={() =>setOpenModal(false)}/>,document.getElementById('modal'))} 
-        <DeleteModal deleteTask={()=>setTasks([])} onOpen={tasks.length == 0 ?'': deleteModal}  onClose={() =>setDeleteModal(false)} />
+        {
+            tasks.length > 0 ?  <DeleteModal deleteTask={()=>setTasks([])} onOpen={deleteModal}  onClose={() =>setDeleteModal(false)} />: ""
+        }
     </Container>
   )
 }
