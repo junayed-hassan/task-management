@@ -20,12 +20,12 @@ function NoData () {
 
 
 function TaskTable() {
-    let [openModal, setOpenModal] = useState(false); 
-    let [deleteModal,setDeleteModal] = useState(false);
-    let [tasks,setTasks] = useState([]);
-    let [searchText,setSearchText] = useState()
+    const [openModal, setOpenModal] = useState(false); 
+    const [deleteModal,setDeleteModal] = useState(false);
+    const [tasks,setTasks] = useState([]);
+    const [searchText,setSearchText] = useState()
     
-    let createTask = (item) => {
+    const createTask = (item) => {
         setDeleteModal(false)
         let upDateTasks = [
             
@@ -37,7 +37,7 @@ function TaskTable() {
         setTasks(upDateTasks)
     }
 
-    let editTask = (task)=>{
+    const editTask = (task)=>{
         setTasks(tasks.map(item => {
             if (task.id === item.id) {
                 return task;
@@ -47,17 +47,17 @@ function TaskTable() {
         }));
     }
 
-    let deleteHandler = (id) => {
+    const deleteHandler = (id) => {
         setTasks(tasks.filter(item => {
             return item.id != id;
         }))
         
     }
 
-    let searchHandler = (text) => {
+    const searchHandler = (text) => {
         setSearchText(text);
     } 
-    let upDateTasks = tasks.filter(item => {
+    const upDateTasks = tasks.filter(item => {
         return item.title.toLowerCase().includes(searchText.toLowerCase());
     });
 

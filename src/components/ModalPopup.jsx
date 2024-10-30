@@ -44,10 +44,7 @@ export function ModalPopup({ onOpen, onClose,onCreate,taskToEdit,onEdit}) {
                 <div className="mb-2 block">
                   <Label htmlFor="title" value="Title" />
                 </div>
-
                 <input defaultValue={formData.id} {...register('id')} type="hidden" />
-
-
                 <TextInput defaultValue={formData.title} {...register("title")} id="title" type="text"/>
                 <p className="text-xs text-red-700">{errors.title?.message}</p>
               </div>
